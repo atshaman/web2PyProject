@@ -1,0 +1,159 @@
+timestamp: 2021-09-29T13:52:51.287568
+CREATE TABLE "auth_user"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "first_name" CHAR(128),
+    "last_name" CHAR(128),
+    "email" CHAR(512),
+    "password" CHAR(512),
+    "registration_key" CHAR(512),
+    "reset_password_key" CHAR(512),
+    "registration_id" CHAR(512)
+);
+success!
+timestamp: 2021-09-29T13:52:51.374580
+CREATE TABLE "auth_group"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "role" CHAR(512),
+    "description" TEXT
+);
+success!
+timestamp: 2021-09-29T13:52:51.433577
+CREATE TABLE "auth_membership"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2021-09-29T13:52:51.487574
+CREATE TABLE "auth_permission"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE  ,
+    "name" CHAR(512),
+    "table_name" CHAR(512),
+    "record_id" INTEGER
+);
+success!
+timestamp: 2021-09-29T13:52:51.542573
+CREATE TABLE "auth_event"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "time_stamp" TIMESTAMP,
+    "client_ip" CHAR(512),
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "origin" CHAR(512),
+    "description" TEXT
+);
+success!
+timestamp: 2021-09-29T13:52:51.598606
+CREATE TABLE "auth_cas"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "created_on" TIMESTAMP,
+    "service" CHAR(512),
+    "ticket" CHAR(512),
+    "renew" CHAR(1)
+);
+success!
+timestamp: 2021-09-29T15:34:23.496871
+CREATE TABLE "projects"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "name" CHAR(50),
+    "description" TEXT
+);
+success!
+timestamp: 2021-09-29T15:34:50.785318
+CREATE TABLE "environments"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "project" INTEGER REFERENCES "projects" ("id") ON DELETE CASCADE  ,
+    "name" CHAR(50),
+    "adderess" TEXT,
+    "responsible" TEXT
+);
+success!
+timestamp: 2021-09-29T15:37:22.111036
+CREATE TABLE "applicationtypes"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "apptype" CHAR(100) NOT NULL UNIQUE,
+    "info" TEXT
+);
+success!
+timestamp: 2021-09-29T15:37:22.157035
+CREATE TABLE "applicitionstatuses"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "name" CHAR(100) NOT NULL UNIQUE,
+    "info" TEXT
+);
+success!
+timestamp: 2021-09-29T15:37:22.213035
+CREATE TABLE "products"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "name" CHAR(20) NOT NULL UNIQUE,
+    "info" TEXT,
+    "responsible" TEXT
+);
+success!
+timestamp: 2021-09-29T15:38:08.053039
+CREATE TABLE "applications"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "name" CHAR(200) NOT NULL UNIQUE,
+    "apptype" INTEGER REFERENCES "applicationtypes" ("id") ON DELETE CASCADE  NOT NULL ,
+    "product" INTEGER REFERENCES "products" ("id") ON DELETE CASCADE  ,
+    "status" INTEGER REFERENCES "applicitionstatuses" ("id") ON DELETE CASCADE  NOT NULL 
+);
+success!
+timestamp: 2021-09-29T15:38:55.798779
+CREATE TABLE "versions"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "application" INTEGER REFERENCES "applications" ("id") ON DELETE CASCADE  ,
+    "appversion" CHAR(100) NOT NULL,
+    "info" TEXT
+);
+success!
+timestamp: 2021-09-29T15:38:55.853781
+CREATE TABLE "releases"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "tag" CHAR(20) NOT NULL UNIQUE,
+    "released_at" DATE NOT NULL DEFAULT '2021-09-29',
+    "info" TEXT
+);
+success!
+timestamp: 2021-09-29T15:41:16.694456
+CREATE TABLE "apprelease"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "tag" INTEGER REFERENCES "releases" ("id") ON DELETE CASCADE  NOT NULL ,
+    "application" INTEGER REFERENCES "applications" ("id") ON DELETE CASCADE  NOT NULL ,
+    "appversion" INTEGER REFERENCES "versions" ("id") ON DELETE CASCADE  NOT NULL 
+);
+success!
+timestamp: 2021-09-29T15:41:16.746499
+CREATE TABLE "installed"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "environment" INTEGER REFERENCES "environments" ("id") ON DELETE CASCADE  NOT NULL ,
+    "appversion" INTEGER REFERENCES "versions" ("id") ON DELETE CASCADE  NOT NULL ,
+    "reported_at" DATE NOT NULL DEFAULT '2021-09-29'
+);
+success!
+timestamp: 2021-09-29T18:19:32.970085
+ALTER TABLE "environments" ADD "address" TEXT;
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
